@@ -6,13 +6,15 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 const Footer = () => {
   return (
     <footer style={{ backgroundColor: "#FFFFFF" }}>
-      <Container maxWidth="lg" sx={{ paddingX: "0px" }}>
+      <Container maxWidth="lg" sx={{paddingX : '.5em' , '@media screen and (min-width: 768px)': {
+        paddingX : '1.5em'
+        },}}>
         <Grid
           container
           sx={{ placeItems: "center" }}
           fontWeight={600}
           color="#5e6a86"
-          padding="1.75em"
+          padding="1.25em"
           mt={10}
           t
         >

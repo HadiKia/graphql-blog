@@ -10,7 +10,7 @@ import {
 const Header = () => {
   return (
     <AppBar elevation={0} sx={{ bgcolor: "#FFFFFF" }}>
-      <Container maxWidth="lg" sx={{ paddingX: "0px", paddingY: ".5em" }}>
+      <Container maxWidth="lg" sx={{ padding: ".5em"}}>
         <Toolbar>
           <Typography
             flex={1}

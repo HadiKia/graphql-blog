@@ -6,14 +6,16 @@ import Blogs from "../blog/Blogs";
 const HomePage = () => {
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={4} padding={3} mt={4} mr={-2}>
-        <Grid item xs={12} sm={4} mt={4}>
+      <Grid container mt={12} sx={{paddingX : '.5em' , '@media screen and (min-width: 768px)': {
+        paddingX : '1.5em'
+        },}}>
+        <Grid item xs={12} sm={3} lg={2} mt={4}>
           <Typography component="h3" variant="h5" mb={3} fontWeight={600}>
             نویسنده ها
           </Typography>
           <Authors />
         </Grid>
-        <Grid item xs={12} sm={8} mt={4}>
+        <Grid item xs={12} sm={9} lg={10} mt={4}>
           <Typography component="h3" variant="h5" mb={3} fontWeight={600}>
             مقالات
           </Typography>
