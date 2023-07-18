@@ -7,17 +7,32 @@ import {
   Button,
   Typography,
 } from "@mui/material";
+
+import logoImage from "./logo.png";
+
 const Header = () => {
   return (
-    <AppBar elevation={0} sx={{ bgcolor: "#FFFFFF" }}>
-      <Container maxWidth="lg" sx={{ padding: ".5em"}}>
+    <AppBar
+      elevation={0}
+      sx={{ bgcolor: "#FFFFFF", borderBottom: "1px solid #ECF0F6" }}
+    >
+      <Container
+        maxWidth="lg"
+        sx={{
+          padding: ".5em",
+          "@media screen and (min-width: 768px)": {
+            paddingX: ".25em",
+          },
+        }}
+      >
         <Toolbar>
+          <img src={logoImage} alt="logo" width="40px" />
           <Typography
             flex={1}
             component="h1"
             variant="h5"
             fontWeight="bold"
-            sx={{ paddingTop: ".2em", color: "#5e6a86" }}
+            sx={{ paddingTop: ".2em", color: "#5e6a86", marginRight: ".3em" }}
           >
             وبلاگ
           </Typography>

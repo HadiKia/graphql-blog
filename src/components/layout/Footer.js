@@ -1,22 +1,27 @@
-import { Link, Typography, Grid, Container } from "@mui/material";
+import { Link, Grid, Container, Box } from "@mui/material";
 import React from "react";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import FingerprintIcon from "@mui/icons-material/Fingerprint";
 
 const Footer = () => {
   return (
-    <footer style={{ backgroundColor: "#FFFFFF" }}>
-      <Container maxWidth="lg" sx={{paddingX : '.5em' , '@media screen and (min-width: 768px)': {
-        paddingX : '1.5em'
-        },}}>
+    <footer style={{ backgroundColor: "#FFFFFF", paddingTop: ".5em" }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          paddingX: ".5em",
+          "@media screen and (min-width: 768px)": {
+            paddingX: ".5em",
+          },
+        }}
+      >
         <Grid
           container
           sx={{ placeItems: "center" }}
           fontWeight={600}
           color="#5e6a86"
           padding="1.25em"
-          mt={10}
-          t
         >
           <Grid item xs={4}>
             <Link
@@ -35,9 +40,17 @@ const Footer = () => {
             </Link>
           </Grid>
           <Grid item xs={8}>
-            <Typography component="p" variant="p" textAlign="left">
-              Built with &#128151; by Hadi Kia
-            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                color: "#5e6a86",
+              }}
+            >
+              <span style={{ fontSize: "1.1rem" }}>developed by HadiKia</span>
+              <FingerprintIcon sx={{ marginBottom: ".35em" }} />
+            </Box>
           </Grid>
         </Grid>
       </Container>

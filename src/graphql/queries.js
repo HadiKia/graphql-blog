@@ -18,6 +18,9 @@ const GET_BLOGS_INFO = gql`
         url
       }
       datePublished
+      content {
+        html
+      }
     }
   }
 `;
@@ -31,6 +34,7 @@ const GET_AUTHORS_INFO = gql`
       avatar {
         url
       }
+      field
     }
   }
 `;

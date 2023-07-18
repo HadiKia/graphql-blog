@@ -1,36 +1,103 @@
-import { Container, Grid, Typography } from "@mui/material";
 import React from "react";
+import { Container, Typography, Tab, Box, Tabs } from "@mui/material";
+import PropTypes from "prop-types";
+
 import Authors from "../author/Authors";
 import Blogs from "../blog/Blogs";
 
-const HomePage = () => {
+import Banner from "./Banner";
+
+function CustomTabPanel(props) {
+  const { children, value, index, ...other } = props;
+
   return (
-    <Container maxWidth="lg">
-      <Grid
-        container
-        mt={9}
+    <Box
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography component="span" variant="span">
+            {children}
+          </Typography>
+        </Box>
+      )}
+    </Box>
+  );
+}
+
+CustomTabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
+const HomePage = () => {
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Container maxWidth="lg" sx={{ marginTop: "7em" }}>
+      <Banner />
+      <Typography
+        component="h2"
+        variant="h5"
         sx={{
-          paddingX: ".5em",
-          "@media screen and (min-width: 768px)": {
-            paddingX: "1.5em",
-          },
+          fontWeight: "600",
+          color: "#1A202E",
+          paddingX: ".25em",
+          marginBottom: "1em",
         }}
       >
-        <Grid item xs={12} sm={3.5} lg={2.5} mt={4} sx={{"@media screen and (min-width: 768px)": {
-            paddingLeft: "1.25em",
-          },}}>
-          <Typography component="h3" variant="h5" mb={3} mr={2} fontWeight={600} sx={{color : '#5e6a86'}}>
-            نویسنده ها
-          </Typography>
-          <Authors />
-        </Grid>
-        <Grid item xs={12} sm={8.5} lg={9.5} mt={4}>
-          <Typography component="h3" variant="h5" mb={3} mr={2} fontWeight={600} sx={{color : '#5e6a86'}}>
-            مقالات
-          </Typography>
+        دسته بندی
+      </Typography>
+      <Box sx={{ marginX: -2 }}>
+        <Box sx={{ marginX: 3, marginBottom: 1 }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            TabIndicatorProps={{
+              hidden: true,
+            }}
+            sx={{
+              "& button": {
+                color: "#5e6a86",
+                border: "1px solid #BAC2D6",
+                borderRadius: ".5em",
+                marginLeft: "1em",
+                fontWeight: "500",
+              },
+              "& button.Mui-selected": {
+                color: "#457EFF",
+                borderColor: "#457EFF",
+                bgcolor: "#457EFF10",
+              },
+            }}
+          >
+            <Tab label="مقاله ها" {...a11yProps(0)} />
+            <Tab label="نویسنده ها" {...a11yProps(1)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
           <Blogs />
-        </Grid>
-      </Grid>
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <Authors />
+        </CustomTabPanel>
+      </Box>
     </Container>
   );
 };

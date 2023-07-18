@@ -7,15 +7,23 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
-  Divider,
   Typography,
 } from "@mui/material";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import persian from "react-date-object/calendars/persian";
 import { DateObject } from "react-multi-date-picker";
 import { convertEnNumberToPersian } from "../helper/convertNumber";
+import sanitizeHtml from "sanitize-html";
+import { ArrowBack } from "@mui/icons-material";
 
-const CardEL = ({ title, slug, coverPhoto, author, datePublished }) => {
+const CardEL = ({
+  title,
+  slug,
+  coverPhoto,
+  author,
+  datePublished,
+  content,
+}) => {
   const date = new DateObject({
     date: new Date(
       datePublished.slice(0, 4),
@@ -27,7 +35,7 @@ const CardEL = ({ title, slug, coverPhoto, author, datePublished }) => {
 
   return (
     <Card
-      sx={{ boxShadow: "none", borderRadius: 4, border: "1px solid #DEE3EB" }}
+      sx={{ boxShadow: "none", borderRadius: 4, border: "1px solid #ECF0F6" }}
     >
       <CardMedia
         component="img"
@@ -38,31 +46,68 @@ const CardEL = ({ title, slug, coverPhoto, author, datePublished }) => {
       <CardContent sx={{ paddingBottom: "0px" }}>
         <Typography
           component="h3"
-          variant="h6"
-          sx={{ color: "#1A202E", fontWeight: "600" }}
+          variant="h5"
+          sx={{ color: "#1A202E", fontWeight: "600", fontSize: "1.7rem" }}
         >
           {title}
         </Typography>
       </CardContent>
-      <CardActions>
-        {/* <Link to={`/blogs/${slug}`} style={{textDecoration : 'none'}}> */}
-        <Button
-          variant="text"
-          sx={{ color: "#5e6a86", fontSize: "1rem", fontWeight: "400" }}
+      <CardActions
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "start",
+          paddingX: "1em",
+          paddingTop: "0px",
+        }}
+      >
+        <div
+          style={{
+            color: "#5e6a86",
+            fontSize: "0.9rem",
+            fontWeight: "300",
+            textAlign: "right",
+          }}
+          dangerouslySetInnerHTML={{
+            __html: sanitizeHtml(content.html.slice(0, 160)),
+          }}
+        ></div>
+        <Link
+          to={`/blogs/${slug}`}
+          style={{ textDecoration: "none", margin: ".25em 0" }}
         >
-          مطالعه مقاله
-        </Button>
-        {/* </Link> */}
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{
+              color: "#457EFF",
+              border: "none",
+              bgcolor: "#F4F7FC",
+              borderRadius: "1.5em",
+              "&:hover": {
+                border: "none",
+                bgcolor: "#457EFF20",
+              },
+              margin: "-0.5em -0.5em 0.5em 0em",
+            }}
+          >
+            مطالعه بیشتر
+            <ArrowBack
+              sx={{
+                marginRight: ".2em",
+                paddingBottom: ".1em",
+                fontSize: "1.25em",
+              }}
+            />
+          </Button>
+        </Link>
       </CardActions>
-      <Divider variant="middle" />
       <CardHeader
         avatar={
           <Avatar
             src={author.avatar.url}
             sx={{
-              marginLeft: ".25em",
-              transform: "scale(.8)",
-              marginBottom: ".1em",
+              margin: "0 -.6em .1em .25em",
             }}
           />
         }
@@ -71,23 +116,27 @@ const CardEL = ({ title, slug, coverPhoto, author, datePublished }) => {
             component="p"
             variant="p"
             sx={{
-              color: "#5e6a86",
+              color: "#495367",
               fontSize: ".9em",
               fontWeight: "500",
               display: "flex",
-              justifyContent: "space-between",
+              flexDirection: "column",
               paddingLeft: "1.2em",
             }}
           >
             {author.name}
-            <span style={{ marginRight: ".5em" }}>
+            <span style={{ color: "#96A2BE", fontSize: ".9rem" }}>
               {convertEnNumberToPersian(date.format().slice(0, 4))}/
               {convertEnNumberToPersian(date.format().slice(5, 7))}/
               {convertEnNumberToPersian(date.format().slice(8))}
             </span>
           </Typography>
         }
-        sx={{ padding: ".75em 0px", marginRight: "-0.2em" }}
+        sx={{
+          padding: ".75em 0px",
+          marginX: 1.5,
+          borderTop: "1px solid #ECF0F6",
+        }}
       />
     </Card>
   );
