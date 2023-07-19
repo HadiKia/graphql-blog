@@ -3,9 +3,16 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { GET_AUTHOR_INFO } from "../../graphql/queries";
-import { Avatar, Container, Grid, Typography } from "@mui/material";
+import {
+  Avatar,
+  Container,
+  Grid,
+  Typography,
+} from "@mui/material";
 import sanitizeHtml from "sanitize-html";
 import CardEL from "../shared/CardEL";
+import { AboutAuthorLoader, ArticleBoxLoader, ArticleTitleLoader, AvatarLoader, NameLoader } from "../Loading/AuthorPageLoader";
+
 
 const AuthorPage = () => {
   const { slug } = useParams();
@@ -14,12 +21,13 @@ const AuthorPage = () => {
     variables: { slug },
   });
 
-  if (loading) return <h3>Loading ...</h3>;
   if (errors) return <h3>errors ...</h3>;
 
-  const {
-    author: { name, field, avatar, description, posts },
-  } = data;
+  if (!loading) {
+    var {
+      author: { name, field, avatar, description, posts },
+    } = data;
+  }
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: "7em" }}>
@@ -34,28 +42,40 @@ const AuthorPage = () => {
               alignItems="center"
               marginBottom={3}
             >
-              <Avatar
-                src={avatar.url}
-                sx={{ width: "100px", height: "100px", marginBottom: "1em" }}
-              />
-              <Typography
-                component="h3"
-                variant="h5"
-                fontWeight="600"
-                color="#1A202E"
-                marginBottom=".25em"
-              >
-                {name}
-              </Typography>
-              <Typography
-                component="p"
-                variant="h5"
-                color="#5E6A86"
-                fontSize="1.2rem"
-                marginBottom=".5em"
-              >
-                {field}
-              </Typography>
+              {loading ? (
+                <AvatarLoader />
+              ) : (
+                <Avatar
+                  src={avatar.url}
+                  sx={{ width: "100px", height: "100px", marginBottom: "1em" }}
+                />
+              )}
+              {loading ? (
+                <NameLoader />
+              ) : (
+                <Typography
+                  component="h3"
+                  variant="h5"
+                  fontWeight="600"
+                  color="#1A202E"
+                  marginBottom=".25em"
+                >
+                  {name}
+                </Typography>
+              )}
+              {loading ? (
+                <NameLoader />
+              ) : (
+                <Typography
+                  component="p"
+                  variant="h5"
+                  color="#5E6A86"
+                  fontSize="1.2rem"
+                  marginBottom=".5em"
+                >
+                  {field}
+                </Typography>
+              )}
             </Grid>
 
             <Grid
@@ -78,12 +98,16 @@ const AuthorPage = () => {
               >
                 درباره نویسنده
               </Typography>
-              <div
-                style={{ color: "#1A202E", lineHeight: "1.75em" }}
-                dangerouslySetInnerHTML={{
-                  __html: sanitizeHtml(description.html),
-                }}
-              ></div>
+              {loading ? (
+                <AboutAuthorLoader />
+              ) : (
+                <div
+                  style={{ color: "#1A202E", lineHeight: "1.75em" }}
+                  dangerouslySetInnerHTML={{
+                    __html: sanitizeHtml(description.html),
+                  }}
+                ></div>
+              )}
             </Grid>
           </Grid>
         </Grid>
@@ -101,27 +125,33 @@ const AuthorPage = () => {
             },
           }}
         >
-          <Typography
-            component="h3"
-            variable="h5"
-            fontWeight="600"
-            fontSize="1.5rem"
-            marginBottom="1em"
-          >
-            مقالات {name}
-          </Typography>
+          {loading ? (
+           <ArticleTitleLoader />
+          ) : (
+            <Typography
+              component="h3"
+              variable="h5"
+              fontWeight="600"
+              fontSize="1.5rem"
+              marginBottom="1em"
+            >
+              مقالات {name}
+            </Typography>
+          )}
           <Grid container spacing={3}>
-            {posts.map((post) => (
-              <Grid item xs={12} md={6} key={post.id}>
-                <CardEL
-                  title={post.title}
-                  slug={post.slug}
-                  coverPhoto={post.coverPhoto}
-                  datePublished={post.datePublished}
-                  content={post.content}
-                />
-              </Grid>
-            ))}
+            {loading
+              ? <ArticleBoxLoader />
+              : posts.map((post) => (
+                  <Grid item xs={12} md={6} key={post.id}>
+                    <CardEL
+                      title={post.title}
+                      slug={post.slug}
+                      coverPhoto={post.coverPhoto}
+                      datePublished={post.datePublished}
+                      content={post.content}
+                    />
+                  </Grid>
+                ))}
           </Grid>
         </Grid>
       </Grid>
