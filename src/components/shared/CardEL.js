@@ -65,7 +65,7 @@ const CardEL = ({
           style={{
             color: "#5e6a86",
             fontSize: "0.9rem",
-            fontWeight: "300",
+            fontWeight: "400",
             textAlign: "right",
           }}
           dangerouslySetInnerHTML={{
@@ -102,42 +102,45 @@ const CardEL = ({
           </Button>
         </Link>
       </CardActions>
-      <CardHeader
-        avatar={
-          <Avatar
-            src={author.avatar.url}
-            sx={{
-              margin: "0 -.6em .1em .25em",
-            }}
-          />
-        }
-        title={
-          <Typography
-            component="p"
-            variant="p"
-            sx={{
-              color: "#495367",
-              fontSize: ".9em",
-              fontWeight: "500",
-              display: "flex",
-              flexDirection: "column",
-              paddingLeft: "1.2em",
-            }}
-          >
-            {author.name}
-            <span style={{ color: "#96A2BE", fontSize: ".9rem" }}>
-              {convertEnNumberToPersian(date.format().slice(0, 4))}/
-              {convertEnNumberToPersian(date.format().slice(5, 7))}/
-              {convertEnNumberToPersian(date.format().slice(8))}
-            </span>
-          </Typography>
-        }
-        sx={{
-          padding: ".75em 0px",
-          marginX: 1.5,
-          borderTop: "1px solid #ECF0F6",
-        }}
-      />
+
+      {author && (
+        <CardHeader
+          avatar={
+            <Avatar
+              src={author.avatar.url}
+              sx={{
+                margin: "0 -.6em .1em .25em",
+              }}
+            />
+          }
+          title={
+            <Typography
+              component="p"
+              variant="p"
+              sx={{
+                color: "#495367",
+                fontSize: ".9em",
+                fontWeight: "500",
+                display: "flex",
+                flexDirection: "column",
+                paddingLeft: "1.2em",
+              }}
+            >
+              {author.name}
+              <span style={{ color: "#96A2BE", fontSize: ".9rem" }}>
+                {convertEnNumberToPersian(date.format().slice(0, 4))}/
+                {convertEnNumberToPersian(date.format().slice(5, 7))}/
+                {convertEnNumberToPersian(date.format().slice(8))}
+              </span>
+            </Typography>
+          }
+          sx={{
+            padding: ".75em 0px",
+            marginX: 1.5,
+            borderTop: "1px solid #ECF0F6",
+          }}
+        />
+      )}
     </Card>
   );
 };

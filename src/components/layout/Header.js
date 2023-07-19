@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 
 import logoImage from "./logo.png";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -37,7 +38,8 @@ const Header = () => {
             وبلاگ
           </Typography>
           <Box sx={{ display: "flex", columnGap: ".5em" }}>
-            <Button
+           <Link to="/">
+           <Button
               variant="outlined"
               sx={{
                 fontWeight: 600,
@@ -48,6 +50,7 @@ const Header = () => {
             >
               صفحه اصلی
             </Button>
+           </Link>
             <Button
               variant="contained"
               sx={{
