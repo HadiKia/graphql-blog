@@ -126,7 +126,15 @@ const CardEL = ({
                 paddingLeft: "1.2em",
               }}
             >
-              {author.name}
+              <Link
+                to={`/authors/${author.slug}`}
+                style={{
+                  color: "#495367",
+                  textDecoration: "none",
+                }}
+              >
+                {author.name}
+              </Link>
               <span style={{ color: "#96A2BE", fontSize: ".9rem" }}>
                 {convertEnNumberToPersian(date.format().slice(0, 4))}/
                 {convertEnNumberToPersian(date.format().slice(5, 7))}/

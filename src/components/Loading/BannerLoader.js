@@ -34,13 +34,14 @@ const CardContentLoader = () => {
         "@media screen and (min-width: 768px)": {
           width: 300,
           height: 90,
-          marginTop: -2,
+          marginTop: -2.25,
         },
         "@media screen and (min-width: 1024px)": {
           width: 410,
         },
         "@media screen and (min-width: 1200px)": {
           width: 500,
+          marginTop: -1,
         },
       }}
     />

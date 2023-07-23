@@ -6,6 +6,7 @@ const GET_BLOGS_INFO = gql`
       author {
         ... on Author {
           name
+          slug
           avatar {
             url
           }
@@ -66,4 +67,45 @@ const GET_AUTHOR_INFO = gql`
   }
 `;
 
-export { GET_BLOGS_INFO, GET_AUTHORS_INFO, GET_AUTHOR_INFO };
+const GET_POST_INFO = gql`
+  query getPost($slug: String!) {
+    post(where: { slug: $slug }) {
+      author {
+        ... on Author {
+          avatar {
+            url
+          }
+          name
+          field
+          slug
+        }
+      }
+      content {
+        html
+      }
+      datePublished
+      title
+      coverPhoto {
+        url
+      }
+    }
+  }
+`;
+
+const GET_POST_COMMENTS = gql`
+  query getPostComments($slug: String!) {
+    comments(where: { post: { slug: $slug } }) {
+      id
+      name
+      text
+    }
+  }
+`;
+
+export {
+  GET_BLOGS_INFO,
+  GET_AUTHORS_INFO,
+  GET_AUTHOR_INFO,
+  GET_POST_INFO,
+  GET_POST_COMMENTS,
+};

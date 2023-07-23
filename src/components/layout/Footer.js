@@ -12,7 +12,8 @@ const Footer = () => {
         sx={{
           paddingX: ".5em",
           "@media screen and (min-width: 768px)": {
-            paddingX: ".5em",
+            paddingLeft: ".5em",
+            paddingRight: ".75em",
           },
         }}
       >
