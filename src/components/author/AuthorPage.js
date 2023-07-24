@@ -3,16 +3,16 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { GET_AUTHOR_INFO } from "../../graphql/queries";
-import {
-  Avatar,
-  Container,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Avatar, Container, Grid, Typography } from "@mui/material";
 import sanitizeHtml from "sanitize-html";
 import CardEL from "../shared/CardEL";
-import { AboutAuthorLoader, ArticleBoxLoader, ArticleTitleLoader, AvatarLoader, NameLoader } from "../Loading/AuthorPageLoader";
-
+import {
+  AboutAuthorLoader,
+  ArticleBoxLoader,
+  ArticleTitleLoader,
+  AvatarLoader,
+  NameLoader,
+} from "../Loading/AuthorPageLoader";
 
 const AuthorPage = () => {
   const { slug } = useParams();
@@ -30,8 +30,17 @@ const AuthorPage = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ marginTop: "7em" }}>
-      <Grid container spacing={3}>
+    <Container
+      maxWidth="lg"
+      sx={{
+        marginTop: "7em",
+        minHeight: "100vh",
+        "@media screen and (min-width: 768px)": {
+          marginTop: "8em",
+        },
+      }}
+    >
+      <Grid container>
         <Grid item xs={12} sm={4} lg={3}>
           <Grid container>
             <Grid
@@ -40,7 +49,6 @@ const AuthorPage = () => {
               display="flex"
               flexDirection="column"
               alignItems="center"
-              marginBottom={3}
             >
               {loading ? (
                 <AvatarLoader />
@@ -69,8 +77,8 @@ const AuthorPage = () => {
                 <Typography
                   component="p"
                   variant="h5"
-                  color="#5E6A86"
-                  fontSize="1.2rem"
+                  color="#495367"
+                  fontSize="1.1rem"
                   marginBottom=".5em"
                 >
                   {field}
@@ -89,20 +97,11 @@ const AuthorPage = () => {
               }}
               marginBottom={3}
             >
-              <Typography
-                component="h3"
-                variable="h5"
-                fontWeight="600"
-                fontSize="1.5rem"
-                marginBottom="-0.5em"
-              >
-                درباره نویسنده
-              </Typography>
               {loading ? (
                 <AboutAuthorLoader />
               ) : (
                 <div
-                  style={{ color: "#1A202E", lineHeight: "1.75em" }}
+                  style={{ color: "#1A202E", lineHeight: 1.75 }}
                   dangerouslySetInnerHTML={{
                     __html: sanitizeHtml(description.html),
                   }}
@@ -118,7 +117,7 @@ const AuthorPage = () => {
           sm={8}
           lg={9}
           paddingX={1.5}
-          marginBottom={4}
+          marginBottom={5}
           sx={{
             "@media screen and (min-width: 768px)": {
               paddingX: ".5em",
@@ -126,32 +125,41 @@ const AuthorPage = () => {
           }}
         >
           {loading ? (
-           <ArticleTitleLoader />
+            <ArticleTitleLoader />
           ) : (
             <Typography
               component="h3"
               variable="h5"
               fontWeight="600"
-              fontSize="1.5rem"
-              marginBottom="1em"
+              fontSize="1.4rem"
+              color="#495367"
+              sx={{
+                marginBottom: "1em",
+                "@media screen and (min-width: 1024px)": {
+                  marginBottom: "1.25em",
+                  fontSize: "1.5rem",
+                },
+              }}
             >
               مقالات {name}
             </Typography>
           )}
           <Grid container spacing={3}>
-            {loading
-              ? <ArticleBoxLoader />
-              : posts.map((post) => (
-                  <Grid item xs={12} md={6} key={post.id}>
-                    <CardEL
-                      title={post.title}
-                      slug={post.slug}
-                      coverPhoto={post.coverPhoto}
-                      datePublished={post.datePublished}
-                      content={post.content}
-                    />
-                  </Grid>
-                ))}
+            {loading ? (
+              <ArticleBoxLoader />
+            ) : (
+              posts.map((post) => (
+                <Grid item xs={12} md={6} key={post.id}>
+                  <CardEL
+                    title={post.title}
+                    slug={post.slug}
+                    coverPhoto={post.coverPhoto}
+                    datePublished={post.datePublished}
+                    content={post.content}
+                  />
+                </Grid>
+              ))
+            )}
           </Grid>
         </Grid>
       </Grid>

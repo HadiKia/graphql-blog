@@ -94,8 +94,10 @@ const BlogPage = () => {
               },
             }}
           >
-            <Box
+            <Typography
               component="span"
+              variable="span"
+              fontWeight={500}
               sx={{
                 display: "none",
                 "@media screen and (min-width: 768px)": {
@@ -104,7 +106,7 @@ const BlogPage = () => {
               }}
             >
               بازگشت
-            </Box>
+            </Typography>
             <ArrowBack
               sx={{
                 marginRight: ".2em",
@@ -138,7 +140,7 @@ const BlogPage = () => {
               <Box
                 paddingX={1.25}
                 display="flex"
-                alignItems="center"
+                alignItems="start"
                 justifyContent="space-between"
                 mb={0}
               >
@@ -159,9 +161,7 @@ const BlogPage = () => {
                     component="p"
                     variant="p"
                     sx={{
-                      color: "#495367",
                       fontSize: "1em",
-                      fontWeight: "600",
                       display: "flex",
                       flexDirection: "column",
                       "@media screen and (min-width: 768px)": {
@@ -172,8 +172,9 @@ const BlogPage = () => {
                     <Link
                       to={`/authors/${data.post.author.slug}`}
                       style={{
-                        color: "#495367",
+                        color: "#1A202E",
                         textDecoration: "none",
+                        fontWeight: "600",
                       }}
                     >
                       {data.post.author.name}
@@ -181,8 +182,9 @@ const BlogPage = () => {
                     <Box
                       component="span"
                       sx={{
-                        color: "#96A2BE",
+                        color: "#5e6a86",
                         fontSize: ".9rem",
+                        fontWeight: 500,
                         "@media screen and (min-width: 768px)": {
                           fontSize: "1rem",
                         },
@@ -193,9 +195,9 @@ const BlogPage = () => {
                   </Typography>
                 </Box>
                 <Typography
-                  style={{
-                    color: "#96A2BE",
-                    fontSize: "1.1rem",
+                  sx={{
+                    color: "#5e6a86",
+                    fontSize: "1rem",
                     fontWeight: 500,
                   }}
                 >
@@ -209,8 +211,9 @@ const BlogPage = () => {
                 <Box
                   sx={{
                     color: "#1A202E",
+                    lineHeight: 1.75,
                     "@media screen and (min-width: 768px)": {
-                      fontSize: "1.2rem",
+                      fontSize: "1.1rem",
                     },
                     "@media screen and (min-width: 1024px)": {
                       textAlign: "justify",

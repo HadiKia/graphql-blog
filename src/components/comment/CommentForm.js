@@ -73,7 +73,7 @@ const CommentForm = ({ slug }) => {
       </Typography>
 
       <Box component="form" onSubmit={submitHandler}>
-        <Box mb={2.5}>
+        <Box mb={1}>
           <TextField
             variant="standard"
             label="نام کاربری"
@@ -86,18 +86,23 @@ const CommentForm = ({ slug }) => {
               "& label": {
                 right: ".25em",
                 transformOrigin: "right",
+                color : '#5e6a86'
               },
               "& .MuiInputBase-root": {
                 color: "#1A202E",
               },
+              "& .MuiInput-underline:before": {
+                borderBottom: "1px solid #ECF0F6 !important",
+              },
               "& .MuiInput-underline:hover:before": {
-                borderBottom: "1px solid #949494 !important",
+                borderBottom: "1px solid #ECF0F6 !important",
               },
               "& label.Mui-focused": {
                 color: "#457EFF",
               },
               "& .MuiInput-underline:after": {
                 borderBottomColor: "#457EFF",
+                borderWidth : 1
               },
               marginBottom: 1,
             }}
@@ -107,14 +112,19 @@ const CommentForm = ({ slug }) => {
               component="span"
               variant="p"
               color="#e22423"
-              fontSize={14}
+              sx={{
+                fontSize: 13,
+                "@media screen and (min-width: 768px)": {
+                  fontSize: 14,
+                },
+              }}
             >
               {formErrors.name}
             </Typography>
           )}
         </Box>
 
-        <Box mb={2.5}>
+        <Box mb={1}>
           <TextField
             variant="standard"
             label="ایمیل"
@@ -127,18 +137,23 @@ const CommentForm = ({ slug }) => {
               "& label": {
                 right: ".25em",
                 transformOrigin: "right",
+                 color : '#5e6a86'
               },
               "& .MuiInputBase-root": {
                 color: "#1A202E",
               },
+              "& .MuiInput-underline:before": {
+                borderBottom: "1px solid #ECF0F6 !important",
+              },
               "& .MuiInput-underline:hover:before": {
-                borderBottom: "1px solid #949494 !important",
+                borderBottom: "1px solid #ECF0F6 !important",
               },
               "& label.Mui-focused": {
                 color: "#457EFF",
               },
               "& .MuiInput-underline:after": {
                 borderBottomColor: "#457EFF",
+                borderWidth : 1
               },
               marginBottom: 1,
             }}
@@ -148,7 +163,12 @@ const CommentForm = ({ slug }) => {
               component="span"
               variant="p"
               color="#e22423"
-              fontSize={14}
+              sx={{
+                fontSize: 13,
+                "@media screen and (min-width: 768px)": {
+                  fontSize: 14,
+                },
+              }}
             >
               {formErrors.email}
             </Typography>
@@ -170,18 +190,23 @@ const CommentForm = ({ slug }) => {
               "& label": {
                 right: ".25em",
                 transformOrigin: "right",
+                color : '#5e6a86'
               },
               "& .MuiInputBase-root": {
                 color: "#1A202E",
               },
+              "& .MuiInput-underline:before": {
+                borderBottom: "1px solid #ECF0F6 !important",
+              },
               "& .MuiInput-underline:hover:before": {
-                borderBottom: "1px solid #949494 !important",
+                borderBottom: "1px solid #ECF0F6 !important",
               },
               "& label.Mui-focused": {
                 color: "#457EFF",
               },
               "& .MuiInput-underline:after": {
                 borderBottomColor: "#457EFF",
+                borderWidth : 1
               },
               marginBottom: 1,
             }}
@@ -191,7 +216,12 @@ const CommentForm = ({ slug }) => {
               component="span"
               variant="p"
               color="#e22423"
-              fontSize={14}
+              sx={{
+                fontSize: 13,
+                "@media screen and (min-width: 768px)": {
+                  fontSize: 14,
+                },
+              }}
             >
               {formErrors.text}
             </Typography>
@@ -210,7 +240,6 @@ const CommentForm = ({ slug }) => {
             />
           ) : (
             <Button
-              // onClick={sendHandler}
               type="submit"
               variant="contained"
               sx={{

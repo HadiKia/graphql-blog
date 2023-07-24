@@ -8,10 +8,10 @@ const CommentEL = (comment) => {
         <Avatar sx={{marginLeft: 1,}}>
             {comment.name[0]}
         </Avatar>
-            <Typography component="span" variant="p" color="#495367" fontWeight={600} fontSize={14}>{comment.name}</Typography>
+            <Typography component="span" variant="p" color="#5e6a86" fontWeight={500} fontSize={14}>{comment.name}</Typography>
       </Box>
 
-      <Typography component="p" variant="p" color="#5e6a86" fontSize={14} marginRight={6}>
+      <Typography component="p" variant="p" color="#495367" fontWeight={500} fontSize={14} marginRight={6}>
         {comment.text}
       </Typography>
     </Box>

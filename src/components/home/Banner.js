@@ -214,14 +214,21 @@ const Banner = () => {
                         component="p"
                         variant="p"
                         sx={{
-                          color: "#495367",
                           fontSize: "1.3em",
                           fontWeight: "500",
                           paddingRight: ".25em",
                           marginBottom: ".05em",
                         }}
                       >
-                        {data.posts[3].author.name}
+                        <Link
+                          to={`/authors/${data.posts[3].author.slug}`}
+                          style={{
+                            color: "#495367",
+                            textDecoration: "none",
+                          }}
+                        >
+                          {data.posts[3].author.name}
+                        </Link>
                       </Typography>
                     )}
                     {loading ? (

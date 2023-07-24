@@ -118,7 +118,6 @@ const CardEL = ({
               component="p"
               variant="p"
               sx={{
-                color: "#495367",
                 fontSize: ".9em",
                 fontWeight: "500",
                 display: "flex",
