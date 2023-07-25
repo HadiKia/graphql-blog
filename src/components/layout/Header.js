@@ -6,12 +6,24 @@ import {
   Container,
   Button,
   Typography,
+  Dialog,
 } from "@mui/material";
 
 import logoImage from "./logo.png";
 import { Link } from "react-router-dom";
+import SignUp from "../shared/SignUp";
 
 const Header = () => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <AppBar
       elevation={0}
@@ -38,20 +50,21 @@ const Header = () => {
             وبلاگ
           </Typography>
           <Box sx={{ display: "flex", columnGap: ".5em" }}>
-           <Link to="/">
-           <Button
-              variant="outlined"
-              sx={{
-                fontWeight: 600,
-                borderRadius: "1.5em",
-                color: "#457EFF",
-                borderColor: "#457EFF",
-              }}
-            >
-              صفحه اصلی
-            </Button>
-           </Link>
+            <Link to="/">
+              <Button
+                variant="outlined"
+                sx={{
+                  fontWeight: 600,
+                  borderRadius: "1.5em",
+                  color: "#457EFF",
+                  borderColor: "#457EFF",
+                }}
+              >
+                صفحه اصلی
+              </Button>
+            </Link>
             <Button
+              onClick={handleClickOpen}
               variant="contained"
               sx={{
                 fontWeight: 600,
@@ -66,6 +79,9 @@ const Header = () => {
             >
               ثبت نام
             </Button>
+            <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { borderRadius: 3,  } }} >
+              <SignUp />
+            </Dialog>
           </Box>
         </Toolbar>
       </Container>
