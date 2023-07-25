@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -10,50 +10,38 @@ import { useMutation } from "@apollo/client";
 import { SEND_COMMENT } from "../../graphql/mutations";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { validate } from "../helper/validate";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const CommentForm = ({ slug }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    text: "",
-  });
-
-  const [formErrors, setFormErrors] = useState({});
-  const [touched, setTouched] = useState({});
-
-  useEffect(() => {
-    setFormErrors(validate(formData));
-  }, [formData, touched]);
-
-  const changeHandler = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
-
-  const focusHandler = (event) => {
-    setTouched({ ...touched, [event.target.name]: true });
-  };
-
-  const submitHandler = (event) => {
-    event.preventDefault();
-    if (!Object.keys(formErrors).length) {
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      email: "",
+      text: "",
+    },
+    onSubmit: () => {
       sendComment();
       toast.success("ارسال با موفقیت، در انتظار تأیید", {
         position: "top-center",
       });
-    } else {
-      setTouched({ name: true, email: true, text: true });
-      toast.warn("فرم را تکمیل کنید", {
-        position: "top-center",
-      });
-    }
-  };
+    },
+    validationSchema: Yup.object({
+      username: Yup.string()
+        .min(5, "نام کاربری باید حداقل 5 کاراکتر باشد")
+        .required("لطفا نام کاربری خود را وارد کنید"),
+      email: Yup.string()
+        .email("ایمیل وارد شده نامعتبر است")
+        .required("لطفا ایمیل خود را وارد کنید"),
+      text: Yup.string().required("لطفا نظر خود را وارد کنید"),
+    }),
+  });
 
   const [sendComment, { loading, errors }] = useMutation(SEND_COMMENT, {
     variables: {
-      name: formData.name,
-      email: formData.email,
-      text: formData.text,
+      name: formik.values.username,
+      email: formik.values.email,
+      text: formik.values.text,
       slug,
     },
   });
@@ -72,163 +60,151 @@ const CommentForm = ({ slug }) => {
         ارسال کامنت
       </Typography>
 
-      <Box component="form" onSubmit={submitHandler}>
-        <Box mb={1}>
-          <TextField
-            variant="standard"
-            label="نام کاربری"
-            fullWidth
-            name="name"
-            value={formData.name}
-            onChange={changeHandler}
-            onFocus={focusHandler}
+      <Box component="form" onSubmit={formik.handleSubmit}>
+        <TextField
+          variant="standard"
+          label="نام کاربری"
+          fullWidth
+          type="text"
+          {...formik.getFieldProps("username")}
+          sx={{
+            "& label": {
+              right: ".25em",
+              transformOrigin: "right",
+              color: "#5e6a86",
+            },
+            "& .MuiInputBase-root": {
+              color: "#1A202E",
+            },
+            "& .MuiInput-underline:before": {
+              borderBottom: "1px solid #ECF0F6 !important",
+            },
+            "& .MuiInput-underline:hover:before": {
+              borderBottom: "1px solid #ECF0F6 !important",
+            },
+            "& label.Mui-focused": {
+              color: "#457EFF",
+            },
+            "& .MuiInput-underline:after": {
+              borderBottomColor: "#457EFF",
+              borderWidth: 1,
+            },
+            marginY: 1,
+          }}
+        />
+        {formik.errors.username && formik.touched.username && (
+          <Typography
+            component="span"
+            variant="p"
+            color="#e22423"
             sx={{
-              "& label": {
-                right: ".25em",
-                transformOrigin: "right",
-                color : '#5e6a86'
+              fontSize: 13,
+              "@media screen and (min-width: 768px)": {
+                fontSize: 14,
               },
-              "& .MuiInputBase-root": {
-                color: "#1A202E",
-              },
-              "& .MuiInput-underline:before": {
-                borderBottom: "1px solid #ECF0F6 !important",
-              },
-              "& .MuiInput-underline:hover:before": {
-                borderBottom: "1px solid #ECF0F6 !important",
-              },
-              "& label.Mui-focused": {
-                color: "#457EFF",
-              },
-              "& .MuiInput-underline:after": {
-                borderBottomColor: "#457EFF",
-                borderWidth : 1
-              },
-              marginBottom: 1,
             }}
-          />
-          {formErrors.name && touched.name && (
-            <Typography
-              component="span"
-              variant="p"
-              color="#e22423"
-              sx={{
-                fontSize: 13,
-                "@media screen and (min-width: 768px)": {
-                  fontSize: 14,
-                },
-              }}
-            >
-              {formErrors.name}
-            </Typography>
-          )}
-        </Box>
+          >
+            {formik.errors.username}
+          </Typography>
+        )}
 
-        <Box mb={1}>
-          <TextField
-            variant="standard"
-            label="ایمیل"
-            fullWidth
-            name="email"
-            value={formData.email}
-            onChange={changeHandler}
-            onFocus={focusHandler}
+        <TextField
+          variant="standard"
+          label="ایمیل"
+          fullWidth
+          type="email"
+          {...formik.getFieldProps("email")}
+          sx={{
+            "& label": {
+              right: ".25em",
+              transformOrigin: "right",
+              color: "#5e6a86",
+            },
+            "& .MuiInputBase-root": {
+              color: "#1A202E",
+            },
+            "& .MuiInput-underline:before": {
+              borderBottom: "1px solid #ECF0F6 !important",
+            },
+            "& .MuiInput-underline:hover:before": {
+              borderBottom: "1px solid #ECF0F6 !important",
+            },
+            "& label.Mui-focused": {
+              color: "#457EFF",
+            },
+            "& .MuiInput-underline:after": {
+              borderBottomColor: "#457EFF",
+              borderWidth: 1,
+            },
+            marginY: 1,
+          }}
+        />
+        {formik.errors.email && formik.touched.email && (
+          <Typography
+            component="span"
+            variant="p"
+            color="#e22423"
             sx={{
-              "& label": {
-                right: ".25em",
-                transformOrigin: "right",
-                 color : '#5e6a86'
+              fontSize: 13,
+              "@media screen and (min-width: 768px)": {
+                fontSize: 14,
               },
-              "& .MuiInputBase-root": {
-                color: "#1A202E",
-              },
-              "& .MuiInput-underline:before": {
-                borderBottom: "1px solid #ECF0F6 !important",
-              },
-              "& .MuiInput-underline:hover:before": {
-                borderBottom: "1px solid #ECF0F6 !important",
-              },
-              "& label.Mui-focused": {
-                color: "#457EFF",
-              },
-              "& .MuiInput-underline:after": {
-                borderBottomColor: "#457EFF",
-                borderWidth : 1
-              },
-              marginBottom: 1,
             }}
-          />
-          {formErrors.email && touched.email && (
-            <Typography
-              component="span"
-              variant="p"
-              color="#e22423"
-              sx={{
-                fontSize: 13,
-                "@media screen and (min-width: 768px)": {
-                  fontSize: 14,
-                },
-              }}
-            >
-              {formErrors.email}
-            </Typography>
-          )}
-        </Box>
+          >
+            {formik.errors.email}
+          </Typography>
+        )}
 
-        <Box mb={4}>
-          <TextField
-            variant="standard"
-            label="متن کامنت"
-            fullWidth
-            multiline
-            minRows={4}
-            name="text"
-            value={formData.text}
-            onChange={changeHandler}
-            onFocus={focusHandler}
+        <TextField
+          variant="standard"
+          label="متن کامنت"
+          fullWidth
+          type="text"
+          {...formik.getFieldProps("text")}
+          multiline
+          rows={4}
+          sx={{
+            "& label": {
+              right: ".25em",
+              transformOrigin: "right",
+              color: "#5e6a86",
+            },
+            "& .MuiInputBase-root": {
+              color: "#1A202E",
+            },
+            "& .MuiInput-underline:before": {
+              borderBottom: "1px solid #ECF0F6 !important",
+            },
+            "& .MuiInput-underline:hover:before": {
+              borderBottom: "1px solid #ECF0F6 !important",
+            },
+            "& label.Mui-focused": {
+              color: "#457EFF",
+            },
+            "& .MuiInput-underline:after": {
+              borderBottomColor: "#457EFF",
+              borderWidth: 1,
+            },
+            marginY: 1,
+          }}
+        />
+        {formik.errors.text && formik.touched.text && (
+          <Typography
+            component="span"
+            variant="p"
+            color="#e22423"
             sx={{
-              "& label": {
-                right: ".25em",
-                transformOrigin: "right",
-                color : '#5e6a86'
+              fontSize: 13,
+              "@media screen and (min-width: 768px)": {
+                fontSize: 14,
               },
-              "& .MuiInputBase-root": {
-                color: "#1A202E",
-              },
-              "& .MuiInput-underline:before": {
-                borderBottom: "1px solid #ECF0F6 !important",
-              },
-              "& .MuiInput-underline:hover:before": {
-                borderBottom: "1px solid #ECF0F6 !important",
-              },
-              "& label.Mui-focused": {
-                color: "#457EFF",
-              },
-              "& .MuiInput-underline:after": {
-                borderBottomColor: "#457EFF",
-                borderWidth : 1
-              },
-              marginBottom: 1,
             }}
-          />
-          {formErrors.text && touched.text && (
-            <Typography
-              component="span"
-              variant="p"
-              color="#e22423"
-              sx={{
-                fontSize: 13,
-                "@media screen and (min-width: 768px)": {
-                  fontSize: 14,
-                },
-              }}
-            >
-              {formErrors.text}
-            </Typography>
-          )}
-        </Box>
+          >
+            {formik.errors.text}
+          </Typography>
+        )}
 
-        <Box textAlign="left">
+        <Box textAlign="left" marginTop={4}>
           {loading ? (
             <CircularProgress
               size={25}
