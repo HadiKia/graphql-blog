@@ -17,6 +17,16 @@ import { convertEnNumberToPersian } from "../helper/convertNumber";
 import sanitizeHtml from "sanitize-html";
 import CommentForm from "../comment/CommentForm";
 import Comments from "../comment/Comments";
+import {
+  AuthorAvatarLoader,
+  AuthorFieldLoader,
+  AuthorNameLoader,
+  CommentFormLoader,
+  CommentsLoader,
+  CoverPhotoLoader,
+  PostContentLoader,
+  PostTitleLoader,
+} from "../Loading/BlogPageLoader";
 
 const BlogPage = () => {
   const { slug } = useParams();
@@ -26,17 +36,18 @@ const BlogPage = () => {
     variables: { slug },
   });
 
-  if (loading) return <h3>loading ...</h3>;
   if (errors) return <h3>errors ...</h3>;
 
-  const date = new DateObject({
-    date: new Date(
-      data.post.datePublished.slice(0, 4),
-      data.post.datePublished.slice(5, 7),
-      data.post.datePublished.slice(8)
-    ),
-    calendar: persian,
-  });
+  if (!loading) {
+    var date = new DateObject({
+      date: new Date(
+        data.post.datePublished.slice(0, 4),
+        data.post.datePublished.slice(5, 7),
+        data.post.datePublished.slice(8)
+      ),
+      calendar: persian,
+    });
+  }
 
   return (
     <Container
@@ -63,21 +74,25 @@ const BlogPage = () => {
             },
           }}
         >
-          <Typography
-            component="h2"
-            variant="h4"
-            color="#1A202E"
-            fontWeight={800}
-            paddingRight={1.25}
-            sx={{
-              fontSize: "1.4rem",
-              "@media screen and (min-width: 768px)": {
-                fontSize: "2rem",
-              },
-            }}
-          >
-            {data.post.title}
-          </Typography>
+          {loading ? (
+            <PostTitleLoader />
+          ) : (
+            <Typography
+              component="h2"
+              variant="h4"
+              color="#1A202E"
+              fontWeight={800}
+              paddingRight={1.25}
+              sx={{
+                fontSize: "1.4rem",
+                "@media screen and (min-width: 768px)": {
+                  fontSize: "2rem",
+                },
+              }}
+            >
+              {data.post.title}
+            </Typography>
+          )}
           <Button
             onClick={() => navigate(-1)}
             variant="outlined"
@@ -128,12 +143,16 @@ const BlogPage = () => {
             }}
           >
             <Grid item xs={12} md={5} paddingX={1.25} marginBottom={4}>
-              <img
-                src={data.post.coverPhoto.url}
-                alt={data.post.slug}
-                width="100%"
-                style={{ borderRadius: 15 }}
-              />
+              {loading ? (
+                <CoverPhotoLoader />
+              ) : (
+                <img
+                  src={data.post.coverPhoto.url}
+                  alt={data.post.slug}
+                  width="100%"
+                  style={{ borderRadius: 15 }}
+                />
+              )}
             </Grid>
 
             <Grid item xs={12} md={7}>
@@ -145,18 +164,22 @@ const BlogPage = () => {
                 mb={0}
               >
                 <Box display="flex" alignItems="center">
-                  <Avatar
-                    src={data.post.author.avatar.url}
-                    sx={{
-                      width: 45,
-                      height: 45,
-                      marginLeft: 1,
-                      "@media screen and (min-width: 768px)": {
-                        width: 50,
-                        height: 50,
-                      },
-                    }}
-                  />
+                  {loading ? (
+                    <AuthorAvatarLoader />
+                  ) : (
+                    <Avatar
+                      src={data.post.author.avatar.url}
+                      sx={{
+                        width: 45,
+                        height: 45,
+                        marginLeft: 1,
+                        "@media screen and (min-width: 768px)": {
+                          width: 50,
+                          height: 50,
+                        },
+                      }}
+                    />
+                  )}
                   <Typography
                     component="p"
                     variant="p"
@@ -169,68 +192,84 @@ const BlogPage = () => {
                       },
                     }}
                   >
-                    <Link
-                      to={`/authors/${data.post.author.slug}`}
-                      style={{
-                        color: "#1A202E",
-                        textDecoration: "none",
-                        fontWeight: "600",
-                      }}
-                    >
-                      {data.post.author.name}
-                    </Link>
-                    <Box
-                      component="span"
-                      sx={{
-                        color: "#5e6a86",
-                        fontSize: ".9rem",
-                        fontWeight: 500,
-                        "@media screen and (min-width: 768px)": {
-                          fontSize: "1rem",
-                        },
-                      }}
-                    >
-                      {data.post.author.field}
-                    </Box>
+                    {loading ? (
+                      <AuthorNameLoader />
+                    ) : (
+                      <Link
+                        to={`/authors/${data.post.author.slug}`}
+                        style={{
+                          color: "#1A202E",
+                          textDecoration: "none",
+                          fontWeight: "600",
+                        }}
+                      >
+                        {data.post.author.name}
+                      </Link>
+                    )}
+                    {loading ? (
+                      <AuthorFieldLoader />
+                    ) : (
+                      <Box
+                        component="span"
+                        sx={{
+                          color: "#5e6a86",
+                          fontSize: ".9rem",
+                          fontWeight: 500,
+                          "@media screen and (min-width: 768px)": {
+                            fontSize: "1rem",
+                          },
+                        }}
+                      >
+                        {data.post.author.field}
+                      </Box>
+                    )}
                   </Typography>
                 </Box>
-                <Typography
-                  sx={{
-                    color: "#5e6a86",
-                    fontSize: "1rem",
-                    fontWeight: 500,
-                  }}
-                >
-                  {convertEnNumberToPersian(date.format().slice(0, 4))}/
-                  {convertEnNumberToPersian(date.format().slice(5, 7))}/
-                  {convertEnNumberToPersian(date.format().slice(8))}
-                </Typography>
+                {loading ? (
+                  <AuthorNameLoader />
+                ) : (
+                  <Typography
+                    sx={{
+                      color: "#5e6a86",
+                      fontSize: "1rem",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {convertEnNumberToPersian(date.format().slice(0, 4))}/
+                    {convertEnNumberToPersian(date.format().slice(5, 7))}/
+                    {convertEnNumberToPersian(date.format().slice(8))}
+                  </Typography>
+                )}
               </Box>
 
               <Box paddingX={1.25} mb={5}>
-                <Box
-                  sx={{
-                    color: "#1A202E",
-                    lineHeight: 1.75,
-                    "@media screen and (min-width: 768px)": {
-                      fontSize: "1.1rem",
-                    },
-                    "@media screen and (min-width: 1024px)": {
-                      textAlign: "justify",
-                    },
-                  }}
-                  dangerouslySetInnerHTML={{
-                    __html: sanitizeHtml(data.post.content.html),
-                  }}
-                ></Box>
+                {loading ? (
+                  <PostContentLoader />
+                ) : (
+                  <Box
+                    sx={{
+                      color: "#1A202E",
+                      lineHeight: 1.75,
+                      "@media screen and (min-width: 768px)": {
+                        fontSize: "1.1rem",
+                      },
+                      "@media screen and (min-width: 1024px)": {
+                        textAlign: "justify",
+                      },
+                    }}
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizeHtml(data.post.content.html),
+                    }}
+                  ></Box>
+                )}
               </Box>
 
               <Box paddingX={1.25} mb={5}>
-                <CommentForm slug={slug} />
+                {loading ? <CommentFormLoader /> : <CommentForm slug={slug} />}
               </Box>
 
               <Box paddingX={1.25} mb={7}>
-                <Comments slug={slug} />
+                {loading ? <CommentsLoader /> : <Comments slug={slug} />}
               </Box>
             </Grid>
           </Grid>
